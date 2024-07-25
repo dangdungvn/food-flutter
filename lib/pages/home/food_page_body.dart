@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:foodapp/controllers/popular_product_controller.dart';
 import 'package:foodapp/controllers/recommended_product_controller.dart';
 import 'package:foodapp/models/product_model.dart';
-import 'package:foodapp/pages/food/popular_food_detail.dart';
+
 import 'package:foodapp/routes/route_helper.dart';
 import 'package:foodapp/utils/app_constants.dart';
 import 'package:foodapp/utils/colors.dart';
@@ -110,7 +110,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        Get.toNamed(RouteHelper.getRecommendedFood());
+                        Get.toNamed(RouteHelper.getRecommendedFood(index));
                       },
                       child: Container(
                         margin: EdgeInsets.only(

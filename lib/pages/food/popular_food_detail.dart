@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodapp/controllers/popular_product_controller.dart';
-import 'package:foodapp/pages/home/main_food_page.dart';
+
 import 'package:foodapp/routes/route_helper.dart';
 import 'package:foodapp/utils/app_constants.dart';
 import 'package:foodapp/utils/colors.dart';
@@ -11,15 +11,15 @@ import 'package:foodapp/widgets/big_text.dart';
 import 'package:foodapp/widgets/expandable_text_widget.dart';
 import 'package:get/get.dart';
 
-// ignore: must_be_immutable
 class PopularFoodDetail extends StatelessWidget {
-  int pageId;
-  PopularFoodDetail({super.key, required this.pageId});
+  final int pageId;
+  const PopularFoodDetail({super.key, required this.pageId});
 
   @override
   Widget build(BuildContext context) {
     var product =
         Get.find<PopularProductController>().popularProductList[pageId];
+    Get.find<PopularProductController>().initProduct();
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -94,69 +94,82 @@ class PopularFoodDetail extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: Container(
-        height: Dimensions.bottomHeightBar,
-        padding: EdgeInsets.only(
-          top: Dimensions.height20,
-          bottom: Dimensions.height20,
-          left: Dimensions.width20,
-          right: Dimensions.width20,
-        ),
-        decoration: BoxDecoration(
-          color: AppColors.buttonBackgroundColor,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(Dimensions.radius20 * 2),
-            topRight: Radius.circular(Dimensions.radius20 * 2),
+      bottomNavigationBar:
+          GetBuilder<PopularProductController>(builder: (popularProduct) {
+        return Container(
+          height: Dimensions.bottomHeightBar,
+          padding: EdgeInsets.only(
+            top: Dimensions.height20,
+            bottom: Dimensions.height20,
+            left: Dimensions.width20,
+            right: Dimensions.width20,
           ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              padding: EdgeInsets.only(
-                top: Dimensions.height20,
-                bottom: Dimensions.height20,
-                left: Dimensions.width20,
-                right: Dimensions.width20,
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Dimensions.radius20),
-                color: Colors.white,
-              ),
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.remove_rounded,
-                    color: AppColors.signColor,
-                  ),
-                  SizedBox(width: Dimensions.width10 / 2),
-                  BigText(text: "0"),
-                  SizedBox(width: Dimensions.width10 / 2),
-                  const Icon(
-                    Icons.add_rounded,
-                    color: AppColors.signColor,
-                  ),
-                ],
-              ),
+          decoration: BoxDecoration(
+            color: AppColors.buttonBackgroundColor,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(Dimensions.radius20 * 2),
+              topRight: Radius.circular(Dimensions.radius20 * 2),
             ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Dimensions.radius20),
-                color: AppColors.mainColor,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                padding: EdgeInsets.only(
+                  top: Dimensions.height20,
+                  bottom: Dimensions.height20,
+                  left: Dimensions.width20,
+                  right: Dimensions.width20,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(Dimensions.radius20),
+                  color: Colors.white,
+                ),
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        popularProduct.setQuantity(false);
+                      },
+                      child: const Icon(
+                        Icons.remove_rounded,
+                        color: AppColors.signColor,
+                      ),
+                    ),
+                    SizedBox(width: Dimensions.width10 / 2),
+                    BigText(text: popularProduct.quantity.toString()),
+                    SizedBox(width: Dimensions.width10 / 2),
+                    GestureDetector(
+                      onTap: () {
+                        popularProduct.setQuantity(true);
+                      },
+                      child: const Icon(
+                        Icons.add_rounded,
+                        color: AppColors.signColor,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              padding: EdgeInsets.only(
-                top: Dimensions.height20,
-                bottom: Dimensions.height20,
-                left: Dimensions.width20,
-                right: Dimensions.width20,
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(Dimensions.radius20),
+                  color: AppColors.mainColor,
+                ),
+                padding: EdgeInsets.only(
+                  top: Dimensions.height20,
+                  bottom: Dimensions.height20,
+                  left: Dimensions.width20,
+                  right: Dimensions.width20,
+                ),
+                child: BigText(
+                    text: "\$ ${product.price} " " | Add to cart",
+                    color: Colors.white),
               ),
-              child: BigText(
-                  text: "\$ ${product.price} " " | Add to cart",
-                  color: Colors.white),
-            ),
-          ],
-        ),
-      ),
+            ],
+          ),
+        );
+      }),
     );
   }
 }
