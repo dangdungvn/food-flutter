@@ -238,15 +238,16 @@ class _FoodPageBodyState extends State<FoodPageBody> {
               margin: EdgeInsets.only(
                   left: Dimensions.width10, right: Dimensions.width10),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(Dimensions.radius30),
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(
-                      AppConstants.BASE_URL +
-                          AppConstants.UPLOAD_URL +
-                          popularProduct.img!,
-                    ),
-                  )),
+                borderRadius: BorderRadius.circular(Dimensions.radius30),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: NetworkImage(
+                    AppConstants.BASE_URL +
+                        AppConstants.UPLOAD_URL +
+                        popularProduct.img!,
+                  ),
+                ),
+              ),
             ),
           ),
           Align(
