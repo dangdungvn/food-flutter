@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:foodapp/data/repository/cart_repo.dart';
 import 'package:foodapp/models/cart_model.dart';
 import 'package:foodapp/models/product_model.dart';
+import 'package:foodapp/utils/colors.dart';
 import 'package:get/get.dart';
 
 class CartController extends GetxController {
@@ -39,7 +41,14 @@ class CartController extends GetxController {
             time: DateTime.now().toString(),
           );
         });
-      } else {}
+      } else {
+        Get.snackbar(
+          "Item count",
+          "You should at least add one !",
+          backgroundColor: AppColors.mainColor,
+          colorText: Colors.white,
+        );
+      }
     }
   }
 
@@ -68,5 +77,11 @@ class CartController extends GetxController {
       totalQuantity += value.quantity!;
     });
     return totalQuantity;
+  }
+
+  List<CartModel> get getItems {
+    return _items.entries.map((e) {
+      return e.value;
+    }).toList();
   }
 }

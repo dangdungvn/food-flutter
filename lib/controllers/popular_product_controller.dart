@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodapp/controllers/cart_controller.dart';
 import 'package:foodapp/data/repository/popular_product_repo.dart';
+import 'package:foodapp/models/cart_model.dart';
 import 'package:foodapp/models/product_model.dart';
 import 'package:foodapp/utils/colors.dart';
 import 'package:get/get.dart';
@@ -47,6 +48,10 @@ class PopularProductController extends GetxController {
         backgroundColor: AppColors.mainColor,
         colorText: Colors.white,
       );
+      if (_inCartItems > 0) {
+        _quantity = _inCartItems;
+        return _quantity;
+      }
       return 0;
     } else if ((_inCartItems + quantity) > 20) {
       Get.snackbar(
@@ -73,21 +78,18 @@ class PopularProductController extends GetxController {
   }
 
   void addItem(ProductModel product) {
-    // if (quantity > 0) {
     _cart.addItem(product, _quantity);
     _quantity = 0;
     _inCartItems = _cart.getQUantity(product);
-    // } else {
-    //   Get.snackbar(
-    //     "Item count",
-    //     "You should at least add one !",
-    //     backgroundColor: AppColors.mainColor,
-    //     colorText: Colors.white,
-    //   );
-    // }
+
+    update();
   }
 
   int get totalItems {
     return _cart.totalItems;
+  }
+
+  List<CartModel> get getItems {
+    return _cart.getItems;
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodapp/controllers/cart_controller.dart';
 import 'package:foodapp/controllers/popular_product_controller.dart';
+import 'package:foodapp/pages/cart/cart_page.dart';
 
 import 'package:foodapp/routes/route_helper.dart';
 import 'package:foodapp/utils/app_constants.dart';
@@ -18,6 +19,7 @@ class PopularFoodDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double circleSize = 20;
     var product =
         Get.find<PopularProductController>().popularProductList[pageId];
     Get.find<PopularProductController>()
@@ -64,16 +66,37 @@ class PopularFoodDetail extends StatelessWidget {
                         icon: Icons.shopping_cart_outlined,
                       ),
                       Get.find<PopularProductController>().totalItems >= 1
-                          ? const AppIcon(
-                              icon: Icons.circle_rounded,
-                              size: 20,
-                              iconColor: Colors.transparent,
-                              backgroundColor: AppColors.mainColor,
+                          ? Positioned(
+                              right: 0,
+                              top: 0,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Get.to(() => const CartPage());
+                                },
+                                child: const AppIcon(
+                                  icon: Icons.circle_rounded,
+                                  size: circleSize,
+                                  iconColor: Colors.transparent,
+                                  backgroundColor: AppColors.mainColor,
+                                ),
+                              ),
                             )
+                          : Container(),
+                      Get.find<PopularProductController>().totalItems >= 1
+                          ? Positioned(
+                              right: circleSize / 3,
+                              top: circleSize / 5,
+                              child: BigText(
+                                text: Get.find<PopularProductController>()
+                                    .totalItems
+                                    .toString(),
+                                size: 12,
+                                color: Colors.white,
+                              ))
                           : Container(),
                     ],
                   );
-                })
+                }),
               ],
             ),
           ),
@@ -169,21 +192,21 @@ class PopularFoodDetail extends StatelessWidget {
                   ],
                 ),
               ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(Dimensions.radius20),
-                  color: AppColors.mainColor,
-                ),
-                padding: EdgeInsets.only(
-                  top: Dimensions.height20,
-                  bottom: Dimensions.height20,
-                  left: Dimensions.width20,
-                  right: Dimensions.width20,
-                ),
-                child: GestureDetector(
-                  onTap: () {
-                    popularProduct.addItem(product);
-                  },
+              GestureDetector(
+                onTap: () {
+                  popularProduct.addItem(product);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(Dimensions.radius20),
+                    color: AppColors.mainColor,
+                  ),
+                  padding: EdgeInsets.only(
+                    top: Dimensions.height20,
+                    bottom: Dimensions.height20,
+                    left: Dimensions.width20,
+                    right: Dimensions.width20,
+                  ),
                   child: BigText(
                       text: "\$ ${product.price} " " | Add to cart",
                       color: Colors.white),
